@@ -1,0 +1,34 @@
+crds:
+  # This option decides if the CRDs should be installed
+  # as part of the Helm installation.
+  enabled: true
+
+# The number of replicas of the cert-manager controller to run.
+#
+# The default is 1, but in production set this to 2 or 3 to provide high
+# availability.
+#
+# If `replicas > 1`, consider setting `podDisruptionBudget.enabled=true`.
+#
+# Note that cert-manager uses leader election to ensure that there can
+# only be a single instance active at a time.
+replicaCount: 1
+
+podDnsPolicy: "None"
+podDnsConfig:
+  nameservers:
+    - "1.1.1.1"
+    - "9.9.9.9"
+
+extraArgs:
+  - "--dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53"
+  - "--dns01-recursive-nameservers-only"
+
+podDisruptionBudget:
+  # Enable or disable the PodDisruptionBudget resource.
+  #
+  # This prevents downtime during voluntary disruptions such as during a Node upgrade.
+  # For example, the PodDisruptionBudget will block `kubectl drain`
+  # if it is used on the Node where the only remaining cert-manager
+  # Pod is currently running.
+  enabled: false

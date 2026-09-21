@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-example-deployment
+  namespace: codesativa-system
+  labels:
+    app: app-example
+spec:
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  selector:
+    matchLabels:
+      app: app-example
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: app-example
+    spec:
+      containers:
+        - name: web-app-example
+          image: scr.local.gunturpoetra.com/k8s/codesativa/web-example:latest
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: harbor-secret

@@ -1,0 +1,26 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard
+  namespace: traefik-system
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`traefik.local.gunturpoetra.com`)
+      kind: Rule
+      middlewares:
+        - name: traefik-https-redirectscheme
+          namespace: traefik-system
+        - name: traefik-default-headers
+          namespace: traefik-system
+        - name: traefik-basic-auth
+          namespace: traefik-system
+      services:
+        - name: api@internal
+          kind: TraefikService
+  tls:
+    secretName: local-gunturpoetra-com-production-tls

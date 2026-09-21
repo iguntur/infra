@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: acceptance-web-production
+  namespace: argocd
+spec:
+  project: codesativa
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: codesativa-acceptance-production
+  source:
+    path: starmediateknik/acceptance/overlays/production
+    repoURL: git@github.com:starmediateknik/k8s-manifest.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

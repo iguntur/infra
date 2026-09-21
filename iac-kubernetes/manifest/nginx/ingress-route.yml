@@ -1,0 +1,20 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-ingress
+  namespace: demo
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`web.local.gunturpoetra.com`)
+      kind: Rule
+      services:
+        - name: nginx-svc
+          namespace: demo
+          port: 80
+  tls:
+    secretName: local-gunturpoetra-com-production-tls

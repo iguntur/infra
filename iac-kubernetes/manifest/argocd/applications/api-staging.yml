@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: api-staging
+  namespace: argocd
+spec:
+  project: codesativa
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: codesativa-api-staging
+  source:
+    repoURL: git@github.com:starmediateknik/k8s-manifest.git
+    path: starmediateknik/api/staging
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

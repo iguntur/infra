@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: demo
+  labels:
+    app: nginx
+spec:
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  # progressDeadlineSeconds: 600
+  # revisionHistoryLimit: 6
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80

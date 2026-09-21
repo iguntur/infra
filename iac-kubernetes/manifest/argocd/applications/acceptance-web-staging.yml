@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: acceptance-web-staging
+  namespace: argocd
+  labels:
+    environment: "staging"
+    tier: "frontend"
+spec:
+  project: codesativa
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: codesativa-acceptance-staging
+  source:
+    repoURL: git@github.com:starmediateknik/k8s-manifest.git
+    path: starmediateknik/acceptance/overlays/staging
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
